@@ -36,3 +36,10 @@ project-dir
     |---test                // ut 
     |---config.js           // some config will be use for webpack 
 ```
+
+## Project Command
+
+``` js
+npm run dev    // development Command
+npm run build  // build production
+```
