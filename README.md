@@ -1,8 +1,8 @@
 # vue-starrysky
 
-Author：Victor.X.Qu
+> Author：Victor.X.Qu
 
-Email:  fs7744@hotmail.com
+> Email:  fs7744@hotmail.com
 
 ## What's this ?
 
@@ -10,14 +10,17 @@ A simple project template for do add some function can just deploy add-in module
 
 这是一个为使用vue开发类似功能能像插件模块随意添加的网站的简单项目模板
 
-## Init Project 
+## Usage
 
-Can use vue-cli to init project   (unfinished)
+This is a project template for [vue-cli](https://github.com/vuejs/vue-cli).
 
-可使用 vue-cli 初始化项目           (未完成)
-
-```
-vue init fs7744/vue-starrysky my-project
+``` bash
+$ npm install -g vue-cli
+$ vue init fs7744/vue-starrysky my-project
+$ cd my-project
+$ npm install
+$ npm run dev
+$ npm run build  // build production
 ```
 
 ## Project Structure
@@ -37,9 +40,4 @@ project-dir
     |---config.js           // some config will be use for webpack 
 ```
 
-## Project Command
-
-``` js
-npm run dev    // development Command
-npm run build  // build production
-```
+## 
