@@ -18,7 +18,7 @@
         data() {
             return {
                 currentModule: 'NotFound',
-                urls: ['foo', 'bar', 'module1']
+                urls: ['/foo', '/bar', '/module1']
             }
         },
         created() {

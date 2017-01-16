@@ -8,7 +8,9 @@ window.vss = class vss {
     static Bus = new Vue()
 
     static getBaseModuleName(urlpath) {
-        return urlpath.replace('/', '')
+        let info = urlpath.substring(1)
+        let index = info.indexOf('/')
+        return index == -1 ? info : info.substring(0, index)
     }
 
     static forceCallModuleChanged(moduleName, afterEmit) {
@@ -59,7 +61,12 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     let name = vss.getBaseModuleName(to.path)
-    vss.loadModule(name, '/app.js', next)
+    console.log(name)
+    if (name == '') {
+        next()
+    } else {
+        vss.loadModule(name, '/app.js', next)
+    }
 })
 
 const v = new Vue({
