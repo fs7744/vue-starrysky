@@ -1,6 +1,8 @@
+/* global window:true vss:true document:true */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { sync } from 'vuex-router-sync'
+import Vuex from 'vuex'
 import App from './components/main.vue'
 
 window.vss = class vss {
@@ -12,37 +14,38 @@ window.vss = class vss {
                 state: { currentModule: 'NotFound' },
                 mutations: {
                     changeModule(state, view) {
-                        if (state.currentModule != view)
+                        if (state.currentModule !== view) {
                             state.currentModule = view
-                    }
-                }
-            }
-        }
+                        }
+                    },
+                },
+            },
+        },
     })
 
     static getBaseModuleName(urlpath) {
-        let info = urlpath.substring(1)
-        let index = info.indexOf('/')
-        return index == -1 ? info : info.substring(0, index)
+        const info = urlpath.substring(1)
+        const index = info.indexOf('/')
+        return index === -1 ? info : info.substring(0, index)
     }
 
     static loadModule(src, file, afterLoad) {
-        let filepath = src + file
+        const filepath = src + file
         function changeModule() {
-            let name = vss.Modules.get(filepath) ? 'NotFound' : src
+            const name = vss.Modules.get(filepath) ? 'NotFound' : src
             vss.Store.commit('changeModule', name)
             if (afterLoad != null) {
                 afterLoad()
             }
         }
         if (!vss.Modules.has(filepath)) {
-            let script = document.createElement('script')
+            const script = document.createElement('script')
             vss.Modules.set(filepath, true)
-            let head = document.getElementsByTagName('head')[0]
+            const head = document.getElementsByTagName('head')[0]
             script.type = 'text/javascript'
             script.charset = 'utf-8'
             script.async = true
-            script.src = filepath;
+            script.src = filepath
             script.onerror = () => {
                 script.onerror = script.onload = null
                 changeModule()
@@ -61,12 +64,12 @@ window.vss = class vss {
 }
 
 const router = new VueRouter({
-    routes: []
+    routes: [],
 })
 
 router.beforeEach((to, from, next) => {
-    let name = vss.getBaseModuleName(to.path)
-    if (name == '') {
+    const name = vss.getBaseModuleName(to.path)
+    if (name == null || name === '') {
         next()
     } else {
         vss.loadModule(name, '/app.js', next)
@@ -75,11 +78,9 @@ router.beforeEach((to, from, next) => {
 
 sync(vss.Store, router)
 
-const v = new Vue({
+new Vue({
     el: '#app',
     router,
     store: vss.Store,
-    render: h => h(App)
+    render: h => h(App),
 })
-
-

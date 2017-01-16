@@ -10,23 +10,22 @@
 </template>
 
 <script>
-    import Vue from 'vue'
     import NotFound from './NotFound.vue'
 
     export default {
         name: 'app',
         data() {
             return {
-                urls: ['/foo', '/bar', '/module1']
+                urls: ['/foo', '/bar', '/module1'],
             }
         },
         computed: {
             currentModule() {
                 return this.$store.state.main.currentModule
-            }
+            },
         },
         components: {
-            'NotFound': NotFound
-        }
+            'NotFound': NotFound,
+        },
     }
 </script>

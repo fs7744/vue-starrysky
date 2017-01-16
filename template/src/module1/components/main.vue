@@ -9,14 +9,12 @@
 </template>
 
 <script>
-    import Vue from 'vue'
-
     export default {
         name: 'module1',
         computed: {
             routeInfo() {
                 return this.$store.state.route
-            }
-        }
+            },
+        },
     }
 </script>
