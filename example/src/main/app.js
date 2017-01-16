@@ -2,55 +2,64 @@ import Vue from 'vue'
 import App from './components/main.vue'
 import VueRouter from 'vue-router'
 
-const NF = { template: '<div>404</div>' }
-const routes = [
-]
-const router = new VueRouter({
-    routes
-})
-
 window.vss = class vss {
     static Modules = new Map()
 
     static Bus = new Vue()
 
-    static loadModule(src, afterLoad) {
-        if (!vss.Modules.has(src)) {
-            var script = document.createElement('script')
-            vss.Modules.set(src, script)
-            var head = document.getElementsByTagName('head')[0]
+    static getBaseModuleName(urlpath) {
+        return urlpath.replace('/', '')
+    }
+
+    static forceCallModuleChanged(moduleName, afterEmit) {
+        vss.Bus.$emit('ModuleChanged', moduleName)
+        if (afterEmit != null) {
+            afterEmit()
+        }
+    }
+
+    static whenModuleChanged(fn) {
+        vss.Bus.$on('ModuleChanged', fn)
+    }
+
+    static loadModule(src, file, afterLoad) {
+        let filepath = src + file
+        function changeModule() {
+            let name = vss.Modules.get(filepath) ? 'NotFound' : src
+            vss.forceCallModuleChanged(name, afterLoad)
+        }
+        if (!vss.Modules.has(filepath)) {
+            let script = document.createElement('script')
+            vss.Modules.set(filepath, true)
+            let head = document.getElementsByTagName('head')[0]
             script.type = 'text/javascript'
             script.charset = 'utf-8'
             script.async = true
-            //script.timeout = 120000
-
-            script.src = src;
-            //var timeout = setTimeout(onScriptComplete, 120000)
-            script.onerror = script.onload = onScriptComplete
-            function onScriptComplete() {
-                // avoid mem leaks in IE.
+            script.src = filepath;
+            script.onerror = () => {
                 script.onerror = script.onload = null
-                //clearTimeout(timeout)
-                if (afterLoad != null) {
-                    afterLoad()
-                }
-            };
+                changeModule()
+            }
+
+            script.onload = () => {
+                script.onerror = script.onload = null
+                vss.Modules.set(filepath, false)
+                changeModule()
+            }
             head.appendChild(script)
         } else {
-            if (afterLoad != null) {
-                afterLoad()
-            }
+            changeModule()
         }
     }
 }
 
+const router = new VueRouter({
+    routes: []
+})
 
 router.beforeEach((to, from, next) => {
-
-    vss.loadModule(to.path + '/app.js', () => {
-        vss.Bus.$emit('viewChanged', to.path.replace('/', ''))
-        next()
-    })
+    let name = vss.getBaseModuleName(to.path)
+    vss.loadModule(name, '/app.js', next)
 })
 
 const v = new Vue({
@@ -58,7 +67,5 @@ const v = new Vue({
     router,
     render: h => h(App)
 })
-
-Vue.component('NF404', NF)
 
 

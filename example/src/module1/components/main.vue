@@ -1,6 +1,10 @@
 <template>
-    <div>
-        <div>module1 : {{ rd }}</div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                module1 : {{ rd }}
+            </div>
+        </div>
     </div>
 </template>
 

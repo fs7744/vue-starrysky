@@ -1,37 +1,36 @@
 <template>
     <div>
-        <!--<p>{{ currentView }}</p>
-        <button v-on:click="changeCom">change component</button>-->
-        <router-link to="/foo">Go to Foo</router-link>
-        <router-link to="/bar">Go to Bar</router-link>
-        <router-link to="/module1">Go to module1</router-link>
-        <!--<router-view></router-view>-->
-        <!--<keep-alive>-->
+        <div class="container">
+            <div class="row">
+                <router-link to="/foo" class="col">Go to Foo</router-link>
+                <router-link to="/bar" class="col">Go to Bar</router-link>
+                <router-link to="/module1" class="col">Go to module1</router-link>
+            </div>
+        </div>
         <component v-bind:is="currentView"></component>
-        <!--</keep-alive>-->
     </div>
 </template>
 
 <script>
     import Vue from 'vue'
+    import NotFound from './NotFound.vue'
 
     export default {
         name: 'app',
         data() {
             return {
-                currentView: 'r'
+                currentView: 'NotFound'
             }
         },
         created() {
-            var v = this
-            vss.Bus.$on('viewChanged', (view) => {
-                v.currentView = view
+            let v = this
+            vss.whenModuleChanged((view) => {
+                if (v.currentView != view)
+                    v.currentView = view
             })
         },
-        methods: {
-            changeCom() {
-                this.currentView = this.$route.path.replace('/', '')
-            }
-        },
+        components: {
+            'NotFound': NotFound
+        }
     }
 </script>
