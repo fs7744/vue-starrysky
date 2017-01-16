@@ -1,6 +1,7 @@
 import Vue from 'vue'
-import App from './components/main.vue'
 import VueRouter from 'vue-router'
+import { sync } from 'vuex-router-sync'
+import App from './components/main.vue'
 
 window.vss = class vss {
     static Modules = new Map()
@@ -71,6 +72,8 @@ router.beforeEach((to, from, next) => {
         vss.loadModule(name, '/app.js', next)
     }
 })
+
+sync(vss.Store, router)
 
 const v = new Vue({
     el: '#app',
