@@ -2,18 +2,9 @@ var path = require('path')
 var webpack = require('webpack')
 var merge = require('webpack-merge')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var webpackBaseConfig = require('./webpack.base.conf')
 
-module.exports = {
-    module: {
-        rules: [
-            { test: /\.vue$/, loader: 'vue-loader' },
-            { test: /\.js$/, loader: "babel-loader", exclude: /node_modules/ },
-            { test: /\.css$/, loader: 'style!css!autoprefixer' },
-        ]
-    },
-    externals: {
-        'vue': 'Vue'
-    },
+module.exports = merge(webpackBaseConfig, {
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
@@ -34,4 +25,4 @@ module.exports = {
         }),
         new webpack.optimize.OccurrenceOrderPlugin()
     ]
-}
+})

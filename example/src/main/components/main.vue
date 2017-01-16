@@ -1,7 +1,11 @@
 <template>
     <div>
-        <p>{{ currentView }}</p>
-        <button v-on:click="changeCom">change component</button>
+        <!--<p>{{ currentView }}</p>
+        <button v-on:click="changeCom">change component</button>-->
+        <router-link to="/foo">Go to Foo</router-link>
+        <router-link to="/bar">Go to Bar</router-link>
+        <router-link to="/module1">Go to module1</router-link>
+        <!--<router-view></router-view>-->
         <!--<keep-alive>-->
         <component v-bind:is="currentView"></component>
         <!--</keep-alive>-->
@@ -15,17 +19,18 @@
         name: 'app',
         data() {
             return {
-                currentView: 'home' 
+                currentView: 'r'
             }
+        },
+        created() {
+            var v = this
+            vss.Bus.$on('viewChanged', (view) => {
+                v.currentView = view
+            })
         },
         methods: {
             changeCom() {
-                var info = this.currentView == 'home' ? "module1" : "home";
-                var dd = this;
-                var src = info + "/app.js";
-                vss.loadModule(src, () => {
-                    dd.currentView = info;
-                })
+                this.currentView = this.$route.path.replace('/', '')
             }
         },
     }
