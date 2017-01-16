@@ -2,12 +2,10 @@
     <div>
         <div class="container">
             <div class="row">
-                <router-link to="/foo" class="col">Go to Foo</router-link>
-                <router-link to="/bar" class="col">Go to Bar</router-link>
-                <router-link to="/module1" class="col">Go to module1</router-link>
+                <router-link v-for="u in urls" :to="u" class="col">Go to {{ u }}</router-link>
             </div>
         </div>
-        <component v-bind:is="currentView"></component>
+        <component v-bind:is="currentModule"></component>
     </div>
 </template>
 
@@ -19,14 +17,15 @@
         name: 'app',
         data() {
             return {
-                currentView: 'NotFound'
+                currentModule: 'NotFound',
+                urls: ['foo', 'bar', 'module1']
             }
         },
         created() {
             let v = this
             vss.whenModuleChanged((view) => {
-                if (v.currentView != view)
-                    v.currentView = view
+                if (v.currentModule != view)
+                    v.currentModule = view
             })
         },
         components: {
