@@ -5,7 +5,19 @@ import VueRouter from 'vue-router'
 window.vss = class vss {
     static Modules = new Map()
 
-    static Bus = new Vue()
+    static Store = new Vuex.Store({
+        modules: {
+            main: {
+                state: { currentModule: 'NotFound' },
+                mutations: {
+                    changeModule(state, view) {
+                        if (state.currentModule != view)
+                            state.currentModule = view
+                    }
+                }
+            }
+        }
+    })
 
     static getBaseModuleName(urlpath) {
         let info = urlpath.substring(1)
@@ -13,22 +25,14 @@ window.vss = class vss {
         return index == -1 ? info : info.substring(0, index)
     }
 
-    static forceCallModuleChanged(moduleName, afterEmit) {
-        vss.Bus.$emit('ModuleChanged', moduleName)
-        if (afterEmit != null) {
-            afterEmit()
-        }
-    }
-
-    static whenModuleChanged(fn) {
-        vss.Bus.$on('ModuleChanged', fn)
-    }
-
     static loadModule(src, file, afterLoad) {
         let filepath = src + file
         function changeModule() {
             let name = vss.Modules.get(filepath) ? 'NotFound' : src
-            vss.forceCallModuleChanged(name, afterLoad)
+            vss.Store.commit('changeModule', name)
+            if (afterLoad != null) {
+                afterLoad()
+            }
         }
         if (!vss.Modules.has(filepath)) {
             let script = document.createElement('script')
@@ -61,7 +65,6 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     let name = vss.getBaseModuleName(to.path)
-    console.log(name)
     if (name == '') {
         next()
     } else {
@@ -72,6 +75,7 @@ router.beforeEach((to, from, next) => {
 const v = new Vue({
     el: '#app',
     router,
+    store: vss.Store,
     render: h => h(App)
 })
 

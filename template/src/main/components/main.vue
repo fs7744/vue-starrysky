@@ -17,16 +17,13 @@
         name: 'app',
         data() {
             return {
-                currentModule: 'NotFound',
                 urls: ['/foo', '/bar', '/module1']
             }
         },
-        created() {
-            let v = this
-            vss.whenModuleChanged((view) => {
-                if (v.currentModule != view)
-                    v.currentModule = view
-            })
+        computed: {
+            currentModule() {
+                return this.$store.state.main.currentModule
+            }
         },
         components: {
             'NotFound': NotFound
