@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col offset-md-4">
+            <div class="col offset-md-4" :class="$style.test">
                 404
             </div>
         </div>
@@ -11,3 +11,9 @@
 <script>
     export default {}
 </script>
+
+<style module>
+.test {
+    color: green
+}
+</style>

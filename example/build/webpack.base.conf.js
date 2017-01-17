@@ -20,10 +20,17 @@ module.exports = {
                     formatter: eslintformatter
                 }
             },
-            { test: /\.vue$/, loader: 'vue-loader' },
+            {
+                test: /\.vue$/, loader: 'vue-loader',
+                options: {
+                    cssModules: {
+                        localIdentName: '[name]-[local]-[hash:base64:5]',
+                        camelCase: true
+                    }
+                }
+            },
             { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
-            { test: /\.css$/, loader: 'style!css!autoprefixer' },
-        ]
+        ],
     },
     externals: {
         'vue': 'Vue',

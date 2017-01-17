@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col" :class="$style.test" >
                 module1 : {{ routeInfo }}
             </div>
         </div>
@@ -18,3 +18,9 @@
         },
     }
 </script>
+
+<style module>
+.test {
+    color: red
+}
+</style>
