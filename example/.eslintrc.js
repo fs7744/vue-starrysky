@@ -23,6 +23,7 @@ module.exports = {
     'semi': ["error", "never"],
     'no-new': "off",
     'quote-props': "off",
+    'no-return-assign': "off",
     'no-param-reassign': ["error", { "props": false }],
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {

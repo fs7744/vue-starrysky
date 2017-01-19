@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col" :class="$style.test" >
-                module1 : {{ routeInfo }}
+                movie : {{ routeInfo }}
             </div>
         </div>
     </div>
@@ -10,7 +10,7 @@
 
 <script>
     export default {
-        name: 'module1',
+        name: 'Movie',
         computed: {
             routeInfo() {
                 return this.$store.state.route

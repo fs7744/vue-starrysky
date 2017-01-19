@@ -64,7 +64,7 @@ window.vss = class vss {
 }
 
 const router = new VueRouter({
-    routes: [],
+    routes: [{ path: '/', redirect: '/About' }],
 })
 
 router.beforeEach((to, from, next) => {
