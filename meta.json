@@ -40,11 +40,16 @@
           "short": "none"
         }
       ]
+    },
+    "unit": {
+      "type": "confirm",
+      "message": "Setup unit tests with Karma + Mocha?"
     }
   },
   "filters": {
     ".eslintrc.js": "lint",
-    ".eslintignore": "lint"
+    ".eslintignore": "lint",
+    "test/unit/**/*": "unit"
   },
   "skipInterpolation": "src/**/*.vue",
   "completeMessage": "To get started:\n\n  cd {{destDirName}}\n  npm install\n  npm run dev"
